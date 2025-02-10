@@ -1,0 +1,49 @@
+##################################################################################
+# Groovy script to bring nodes online
+##################################################################################
+
+def builtInNode = Jenkins.instance
+if (builtInNode.toComputer().isTemporarilyOffline()) {
+    builtInNode.toComputer().setTemporarilyOffline(false, null)
+    println "Built-in node (master) is now online."
+} else {
+    println "Built-in node (master) is already online."
+}
+
+
+##################################################################################
+# Script to disable script approval for DSL 
+##################################################################################
+
+import javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration
+import jenkins.model.GlobalConfiguration
+
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).useScriptSecurity=false
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).save()
+
+
+##################################################################################
+#Script to setup NodeJS
+##################################################################################
+
+import hudson.model.*
+import hudson.tools.*
+import jenkins.plugins.nodejs.tools.*
+import jenkins.model.*
+
+def inst = Jenkins.getInstance()
+def desc = inst.getDescriptor("jenkins.plugins.nodejs.tools.NodeJSInstallation")
+def versions = [
+  "default node": "latest",
+]
+def installations = desc.getInstallations()  as List; 
+
+
+for (v in versions) {
+  def installer = new NodeJSInstaller(v.value, "", 72)
+  def installerProps = new InstallSourceProperty([installer])
+  def installation = new NodeJSInstallation(v.key, "", [installerProps])
+  installations.add(installation)
+}
+desc.setInstallations(installations as jenkins.plugins.nodejs.tools.NodeJSInstallation[])
+desc.save()  

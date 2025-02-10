@@ -1,14 +1,14 @@
 {
-  "name": "automation-testing-template",
+  "name": "Feb 10 Test",
   "version": "1.0.0",
-  "description": "Automated Testing Solution",
+  "description": "Feb 10 automation test",
   "main": "steps_file.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "remote": "npx codeceptjs run --profile remote",
     "local": "npx codeceptjs run --profile local"
   },
-  "author": "Lemuel Benta <lemuel.benta@northhighland.com>",
+  "author": "Symeon Hunter <symeon.hunter@northhighland.com>",
   "license": "ISC",
   "devDependencies": {
     "codeceptjs": "^3.5.10",
